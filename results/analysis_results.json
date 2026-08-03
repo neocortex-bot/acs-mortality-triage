@@ -16,136 +16,136 @@
       "fp": 359,
       "fn": 51,
       "tn": 1249,
-      "sensitivity": 0.7559808612440191,
-      "specificity": 0.7767412935323383,
-      "accuracy": 0.7743533296642818,
-      "ppv": 0.3056092843326886,
-      "npv": 0.9607692307692308
+      "sensitivity": 0.755980861244,
+      "specificity": 0.776741293532,
+      "accuracy": 0.774353329664,
+      "ppv": 0.305609284333,
+      "npv": 0.960769230769
     },
     "stage1": {
       "tp": 173,
       "fp": 518,
       "fn": 36,
       "tn": 1090,
-      "sensitivity": 0.8277511961722488,
-      "specificity": 0.677860696517413,
-      "accuracy": 0.6951018161805174,
-      "ppv": 0.2503617945007236,
-      "npv": 0.9680284191829485
+      "sensitivity": 0.827751196172,
+      "specificity": 0.677860696517,
+      "accuracy": 0.695101816181,
+      "ppv": 0.250361794501,
+      "npv": 0.968028419183
     },
     "tiers": {
       "high": {
         "n": 172,
         "deaths": 87,
         "survivors": 85,
-        "ppv": 0.5058139534883721
+        "ppv": 0.505813953488
       },
       "intermediate": {
         "n": 345,
         "deaths": 71,
         "survivors": 274,
-        "ppv": 0.20579710144927535
+        "ppv": 0.205797101449
       },
       "low": {
         "n": 174,
         "deaths": 15,
         "survivors": 159,
-        "ppv": 0.08620689655172414
+        "ppv": 0.086206896552
       },
       "not_flagged": {
         "n": 1126,
         "deaths": 36,
         "survivors": 1090,
-        "ppv": 0.03197158081705151
+        "ppv": 0.031971580817
       }
     },
-    "auc": 0.8415220547977814,
-    "brier": 0.0798374897229128,
+    "auc": 0.841522054798,
+    "brier": 0.079837489723,
     "calibration": {
-      "slope": 1.0883582059301913,
-      "citl": 0.01701275908018207,
-      "oe_ratio": 1.015184670774236,
-      "ece": 0.017725634869756507
+      "slope": 1.08835820593,
+      "citl": 0.01701275908,
+      "oe_ratio": 1.015184670774,
+      "ece": 0.01772563487
     },
     "feature_importance": {
-      "sbp": 0.08977011798983307,
-      "hr": 0.06704134250890291,
-      "killip": 0.15162358651128074,
-      "hb_igd": 0.054693343084818456,
-      "ureum_igd": 0.1378732208460765,
-      "egfr_igd": 0.1198028995823971,
-      "sii_igd": 0.08971533020358102,
-      "kalium_igd": 0.06678277063078211,
-      "natrium_igd": 0.03444179561800365,
-      "age_when_admission": 0.06095279785790684,
-      "gds_igd": 0.04324602223542948,
-      "oxygen_more_5lpm_igd": 0.08405677293098812
+      "sbp": 0.08977011799,
+      "hr": 0.067041342509,
+      "killip": 0.151623586511,
+      "hb_igd": 0.054693343085,
+      "ureum_igd": 0.137873220846,
+      "egfr_igd": 0.119802899582,
+      "sii_igd": 0.089715330204,
+      "kalium_igd": 0.066782770631,
+      "natrium_igd": 0.034441795618,
+      "age_when_admission": 0.060952797858,
+      "gds_igd": 0.043246022235,
+      "oxygen_more_5lpm_igd": 0.084056772931
     },
     "inner_youden_thresholds": [
-      0.15134731354916264,
-      0.09688899901350738,
-      0.10268458059971364,
-      0.18975407106731274,
-      0.11515548289038956
+      0.151347313549,
+      0.096888999014,
+      0.1026845806,
+      0.189754071067,
+      0.11515548289
     ],
     "youden_reference_threshold": 0.1513,
-    "epv": 14.416666666666666
+    "epv": 14.416666666667
   },
   "grace_comparison": {
-    "model_auc": 0.8415220547977814,
-    "grace_auc": 0.8162045633078626,
-    "delta_auc": 0.025317491489918575,
-    "se": 0.011365046374389126,
-    "z": 2.2276628405996624,
-    "p_value": 0.02590300673988485,
-    "ci_low": 0.003042000596115889,
-    "ci_high": 0.04759298238372126
+    "model_auc": 0.841522054798,
+    "grace_auc": 0.816204563308,
+    "delta_auc": 0.02531749149,
+    "se": 0.011365046374,
+    "z": 2.2276628406,
+    "p_value": 0.02590300674,
+    "ci_low": 0.003042000596,
+    "ci_high": 0.047592982384
   },
   "sensitivity_analysis": {
     "main_12_features": {
-      "system_sensitivity": 0.7559808612440191,
-      "high_ppv": 0.5058139534883721,
-      "auc": 0.8415220547977814
+      "system_sensitivity": 0.755980861244,
+      "high_ppv": 0.505813953488,
+      "auc": 0.841522054798
     },
     "with_cardiogenic_shock_13_features": {
-      "system_sensitivity": 0.9090909090909091,
-      "high_ppv": 0.6197183098591549,
-      "auc": 0.9375104144350019,
+      "system_sensitivity": 0.909090909091,
+      "high_ppv": 0.619718309859,
+      "auc": 0.937510414435,
       "system": {
         "tp": 190,
         "fp": 236,
         "fn": 19,
         "tn": 1372,
-        "sensitivity": 0.9090909090909091,
-        "specificity": 0.8532338308457711,
-        "accuracy": 0.8596587782058338,
-        "ppv": 0.4460093896713615,
-        "npv": 0.9863407620416966
+        "sensitivity": 0.909090909091,
+        "specificity": 0.853233830846,
+        "accuracy": 0.859658778206,
+        "ppv": 0.446009389671,
+        "npv": 0.986340762042
       },
       "tiers": {
         "high": {
           "n": 142,
           "deaths": 88,
           "survivors": 54,
-          "ppv": 0.6197183098591549
+          "ppv": 0.619718309859
         },
         "intermediate": {
           "n": 284,
           "deaths": 102,
           "survivors": 182,
-          "ppv": 0.3591549295774648
+          "ppv": 0.359154929577
         },
         "low": {
           "n": 142,
           "deaths": 10,
           "survivors": 132,
-          "ppv": 0.07042253521126761
+          "ppv": 0.070422535211
         },
         "not_flagged": {
           "n": 1249,
           "deaths": 9,
           "survivors": 1240,
-          "ppv": 0.007205764611689352
+          "ppv": 0.007205764612
         }
       }
     }
@@ -163,47 +163,47 @@
         "fp": 195,
         "fn": 83,
         "tn": 1413,
-        "sensitivity": 0.6028708133971292,
-        "specificity": 0.878731343283582,
-        "accuracy": 0.8470005503577325,
-        "ppv": 0.3925233644859813,
-        "npv": 0.94451871657754
+        "sensitivity": 0.602870813397,
+        "specificity": 0.878731343284,
+        "accuracy": 0.847000550358,
+        "ppv": 0.392523364486,
+        "npv": 0.944518716578
       },
       "stage1": {
         "tp": 145,
         "fp": 284,
         "fn": 64,
         "tn": 1324,
-        "sensitivity": 0.69377990430622,
-        "specificity": 0.8233830845771144,
-        "accuracy": 0.8084755090809026,
-        "ppv": 0.337995337995338,
-        "npv": 0.9538904899135446
+        "sensitivity": 0.693779904306,
+        "specificity": 0.823383084577,
+        "accuracy": 0.808475509081,
+        "ppv": 0.337995337995,
+        "npv": 0.953890489914
       },
       "tiers": {
         "high": {
           "n": 107,
           "deaths": 61,
           "survivors": 46,
-          "ppv": 0.5700934579439252
+          "ppv": 0.570093457944
         },
         "intermediate": {
           "n": 214,
           "deaths": 65,
           "survivors": 149,
-          "ppv": 0.3037383177570093
+          "ppv": 0.303738317757
         },
         "low": {
           "n": 108,
           "deaths": 19,
           "survivors": 89,
-          "ppv": 0.17592592592592593
+          "ppv": 0.175925925926
         },
         "not_flagged": {
           "n": 1388,
           "deaths": 64,
           "survivors": 1324,
-          "ppv": 0.04610951008645533
+          "ppv": 0.046109510086
         }
       }
     },
@@ -219,47 +219,47 @@
         "fp": 298,
         "fn": 63,
         "tn": 1310,
-        "sensitivity": 0.6985645933014354,
-        "specificity": 0.8146766169154229,
-        "accuracy": 0.8013208585580628,
-        "ppv": 0.32882882882882886,
-        "npv": 0.9541150764748726
+        "sensitivity": 0.698564593301,
+        "specificity": 0.814676616915,
+        "accuracy": 0.801320858558,
+        "ppv": 0.328828828829,
+        "npv": 0.954115076475
       },
       "stage1": {
         "tp": 163,
         "fp": 430,
         "fn": 46,
         "tn": 1178,
-        "sensitivity": 0.7799043062200957,
-        "specificity": 0.7325870646766169,
-        "accuracy": 0.7380297193175565,
-        "ppv": 0.2748735244519393,
-        "npv": 0.9624183006535948
+        "sensitivity": 0.77990430622,
+        "specificity": 0.732587064677,
+        "accuracy": 0.738029719318,
+        "ppv": 0.274873524452,
+        "npv": 0.962418300654
       },
       "tiers": {
         "high": {
           "n": 148,
           "deaths": 78,
           "survivors": 70,
-          "ppv": 0.527027027027027
+          "ppv": 0.527027027027
         },
         "intermediate": {
           "n": 296,
           "deaths": 68,
           "survivors": 228,
-          "ppv": 0.22972972972972974
+          "ppv": 0.22972972973
         },
         "low": {
           "n": 149,
           "deaths": 17,
           "survivors": 132,
-          "ppv": 0.11409395973154363
+          "ppv": 0.114093959732
         },
         "not_flagged": {
           "n": 1224,
           "deaths": 46,
           "survivors": 1178,
-          "ppv": 0.03758169934640523
+          "ppv": 0.037581699346
         }
       }
     },
@@ -275,47 +275,47 @@
         "fp": 359,
         "fn": 51,
         "tn": 1249,
-        "sensitivity": 0.7559808612440191,
-        "specificity": 0.7767412935323383,
-        "accuracy": 0.7743533296642818,
-        "ppv": 0.3056092843326886,
-        "npv": 0.9607692307692308
+        "sensitivity": 0.755980861244,
+        "specificity": 0.776741293532,
+        "accuracy": 0.774353329664,
+        "ppv": 0.305609284333,
+        "npv": 0.960769230769
       },
       "stage1": {
         "tp": 173,
         "fp": 518,
         "fn": 36,
         "tn": 1090,
-        "sensitivity": 0.8277511961722488,
-        "specificity": 0.677860696517413,
-        "accuracy": 0.6951018161805174,
-        "ppv": 0.2503617945007236,
-        "npv": 0.9680284191829485
+        "sensitivity": 0.827751196172,
+        "specificity": 0.677860696517,
+        "accuracy": 0.695101816181,
+        "ppv": 0.250361794501,
+        "npv": 0.968028419183
       },
       "tiers": {
         "high": {
           "n": 172,
           "deaths": 87,
           "survivors": 85,
-          "ppv": 0.5058139534883721
+          "ppv": 0.505813953488
         },
         "intermediate": {
           "n": 345,
           "deaths": 71,
           "survivors": 274,
-          "ppv": 0.20579710144927535
+          "ppv": 0.205797101449
         },
         "low": {
           "n": 174,
           "deaths": 15,
           "survivors": 159,
-          "ppv": 0.08620689655172414
+          "ppv": 0.086206896552
         },
         "not_flagged": {
           "n": 1126,
           "deaths": 36,
           "survivors": 1090,
-          "ppv": 0.03197158081705151
+          "ppv": 0.031971580817
         }
       }
     },
@@ -331,47 +331,47 @@
         "fp": 509,
         "fn": 36,
         "tn": 1099,
-        "sensitivity": 0.8277511961722488,
-        "specificity": 0.6834577114427861,
-        "accuracy": 0.7000550357732526,
-        "ppv": 0.2536656891495601,
-        "npv": 0.9682819383259912
+        "sensitivity": 0.827751196172,
+        "specificity": 0.683457711443,
+        "accuracy": 0.700055035773,
+        "ppv": 0.25366568915,
+        "npv": 0.968281938326
       },
       "stage1": {
         "tp": 188,
         "fp": 723,
         "fn": 21,
         "tn": 885,
-        "sensitivity": 0.8995215311004785,
-        "specificity": 0.5503731343283582,
-        "accuracy": 0.5905338470005503,
-        "ppv": 0.20636663007683864,
-        "npv": 0.9768211920529801
+        "sensitivity": 0.8995215311,
+        "specificity": 0.550373134328,
+        "accuracy": 0.590533847001,
+        "ppv": 0.206366630077,
+        "npv": 0.976821192053
       },
       "tiers": {
         "high": {
           "n": 227,
           "deaths": 105,
           "survivors": 122,
-          "ppv": 0.46255506607929514
+          "ppv": 0.462555066079
         },
         "intermediate": {
           "n": 455,
           "deaths": 68,
           "survivors": 387,
-          "ppv": 0.14945054945054945
+          "ppv": 0.149450549451
         },
         "low": {
           "n": 229,
           "deaths": 15,
           "survivors": 214,
-          "ppv": 0.06550218340611354
+          "ppv": 0.065502183406
         },
         "not_flagged": {
           "n": 906,
           "deaths": 21,
           "survivors": 885,
-          "ppv": 0.023178807947019868
+          "ppv": 0.023178807947
         }
       }
     }
@@ -386,12 +386,12 @@
       {
         "variable": "hr",
         "missing_n": 2,
-        "missing_pct": 0.001100715465052284
+        "missing_pct": 0.001100715465
       },
       {
         "variable": "killip",
         "missing_n": 5,
-        "missing_pct": 0.00275178866263071
+        "missing_pct": 0.002751788663
       },
       {
         "variable": "hb_igd",
@@ -401,27 +401,27 @@
       {
         "variable": "ureum_igd",
         "missing_n": 25,
-        "missing_pct": 0.01375894331315355
+        "missing_pct": 0.013758943313
       },
       {
         "variable": "egfr_igd",
         "missing_n": 122,
-        "missing_pct": 0.06714364336818933
+        "missing_pct": 0.067143643368
       },
       {
         "variable": "sii_igd",
         "missing_n": 17,
-        "missing_pct": 0.009356081452944413
+        "missing_pct": 0.009356081453
       },
       {
         "variable": "kalium_igd",
         "missing_n": 4,
-        "missing_pct": 0.002201430930104568
+        "missing_pct": 0.00220143093
       },
       {
         "variable": "natrium_igd",
         "missing_n": 5,
-        "missing_pct": 0.00275178866263071
+        "missing_pct": 0.002751788663
       },
       {
         "variable": "age_when_admission",
@@ -431,7 +431,7 @@
       {
         "variable": "gds_igd",
         "missing_n": 22,
-        "missing_pct": 0.012107870115575124
+        "missing_pct": 0.012107870116
       },
       {
         "variable": "oxygen_more_5lpm_igd",
@@ -440,9 +440,9 @@
       }
     ],
     "complete_case_n": 1648,
-    "complete_case_pct": 0.906989543203082,
+    "complete_case_pct": 0.906989543203,
     "any_missing_n": 169,
-    "any_missing_pct": 0.093010456796918
+    "any_missing_pct": 0.093010456797
   },
   "shock_crosstabs": {
     "killip_iv_n": 279,
@@ -450,11 +450,11 @@
     "shock_on_arrival_n": 278,
     "soa_without_cs_n": 0,
     "cs_without_killip_iv_n": 143,
-    "death_rate_killip_iv": 0.36917562724014336,
-    "death_rate_shock_on_arrival": 0.37050359712230213,
-    "death_rate_cardiogenic_shock": 0.43601895734597157,
+    "death_rate_killip_iv": 0.36917562724,
+    "death_rate_shock_on_arrival": 0.370503597122,
+    "death_rate_cardiogenic_shock": 0.436018957346,
     "death_rate_cs_without_soa": 0.5625,
-    "death_rate_cs_without_killip_iv": 0.5664335664335665
+    "death_rate_cs_without_killip_iv": 0.566433566434
   },
   "oof_predictions": {
     "patient_id": [

@@ -191,6 +191,19 @@ def guardrail_checks(results: dict[str, Any]) -> list[str]:
     return checks
 
 
+def _round_floats(obj: Any, nd: int = 12) -> Any:
+    """Recursively round floats so re-execution never dirties git (kills
+    last-digit parallel-RF noise while keeping far more precision than any
+    reported metric uses)."""
+    if isinstance(obj, float):
+        return round(obj, nd)
+    if isinstance(obj, dict):
+        return {k: _round_floats(v, nd) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_round_floats(v, nd) for v in obj]
+    return obj
+
+
 def run_analysis(write_json: bool = True) -> dict[str, Any]:
     data = load_data()
     y = data["inhospital_death"].astype(int).to_numpy()
@@ -254,7 +267,7 @@ def run_analysis(write_json: bool = True) -> dict[str, Any]:
     if write_json:
         ANALYSIS_RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
         with ANALYSIS_RESULTS_PATH.open("w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, default=_json_default)
+            json.dump(_round_floats(results), f, indent=2, default=_json_default)
     return results
 
 
