@@ -1,0 +1,49 @@
+UPLOAD GUIDE - OJS SUBMISSION
+============================
+
+Upload each file under the matching OJS "Article Component":
+
+1. Upload File step, component "Article Text"
+   -> 01_Article_Text.docx
+      (anonymous body; single-spaced, 12 pt Times New Roman; tables and
+       figures are NOT embedded - they are separate files per journal
+       requirements. In-text callouts remain, e.g. "Table 1", "Figure 1".)
+
+2. Component "Title page"
+   -> 02_Title_Page.docx
+      (title, authors, affiliations, ORCID, corresponding author, running
+       title, keywords, declarations)
+
+3. Component "Cover Letter"
+   -> 03_Cover_Letter.docx
+      (replace [Journal name and address] and [Journal Name] with the
+       journal details before uploading)
+
+4. Component "Tables" (one file per table, .docx, each with its caption)
+   -> 04_Tables/Table_1.docx
+   -> 04_Tables/Table_2.docx
+   -> 04_Tables/Table_3.docx
+   -> 04_Tables/Table_S1.docx
+   -> 04_Tables/Table_S2.docx
+
+5. Component "Figures" (TIFF, 300 DPI, with captions in Figure_Legends.docx)
+   -> 05_Figures/Figure_1.tiff   (ROC curves)
+   -> 05_Figures/Figure_2.tiff   (calibration diagram)
+   -> 05_Figures/Figure_3.tiff   (mortality enrichment)
+   -> 05_Figures/Figure_4.tiff   (monitoring flow)
+   -> 05_Figures/Figure_Legends.docx
+
+6. Component "Supplementary File"
+   -> 05_Figures/Supplementary_Figure_S1.tiff  (threshold trade-off)
+   -> 05_Figures/Supplementary_Figure_S2.tiff  (decision curve analysis)
+   -> 04_Tables/Table_S1.docx and Table_S2.docx may also be listed here
+      if the journal prefers supplementary items grouped together.
+
+Notes
+-----
+* Word count (text only, including references): 2900; the canonical full count including
+  table text is 3,620.
+* References are Vancouver style with DOIs (URLs available via doi.org).
+* Ethics approval number is stated on the title page and in the body.
+* If the journal is NOT double-blind, author details are already present in
+  02_Title_Page.docx; you may also merge them into 01_Article_Text.docx.
