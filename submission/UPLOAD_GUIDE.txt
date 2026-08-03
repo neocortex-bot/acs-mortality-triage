@@ -41,7 +41,7 @@ Upload each file under the matching OJS "Article Component":
 
 Notes
 -----
-* Word count (text only, including references): 2900; the canonical full count including
+* Word count (text only, including references): 3205; the canonical full count including
   table text is 3,620.
 * References are Vancouver style with DOIs (URLs available via doi.org).
 * Ethics approval number is stated on the title page and in the body.

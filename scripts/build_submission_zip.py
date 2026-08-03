@@ -123,6 +123,12 @@ def build_article_text() -> Path:
         else:
             doc.add_paragraph(text)
 
+    # References are appended separately in build_manuscript(); add them here
+    # so the article text is self-contained (Vancouver, numbered).
+    _add_heading(doc, "References", size=13)
+    for i, ref in enumerate(REFERENCES, start=1):
+        doc.add_paragraph(f"{i}. {ref}")
+
     path = SUBMISSION_DIR / "01_Article_Text.docx"
     doc.save(path)
     return path
