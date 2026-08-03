@@ -59,10 +59,10 @@ for flagging). Fixed screening threshold 0.08.
 
 | Metric | Value |
 |---|---|
-| Stage 1 flagged | 691 (38.0%); 173 deaths, 518 survivors |
-| Stage 1 sensitivity / specificity | 82.8% / 67.8% |
-| Stage 1 PPV / NPV | 25.0% / 96.8% (CM 173/518/36/1090) |
-| Stage 1 OOF AUC / Brier | 0.842 / 0.080 |
+| Flagged | 691 (38.0%); 173 deaths, 518 survivors |
+| Flagging sensitivity / specificity | 82.8% / 67.8% |
+| Flagging PPV / NPV | 25.0% / 96.8% (CM 173/518/36/1090) |
+| Model OOF AUC / Brier | 0.842 / 0.080 |
 | GRACE 2.0 AUC (same cohort) | 0.816; Delta AUC 0.025 (DeLong p = 0.026, 95% CI 0.003-0.048) |
 | HIGH tier (top 25% of flagged) | n = 172, deaths = 87, PPV = 50.6% |
 | INTERMEDIATE tier (25-75%) | n = 345, deaths = 71, PPV = 20.6% |
@@ -72,7 +72,7 @@ for flagging). Fixed screening threshold 0.08.
 | System PPV / NPV | 30.6% / 96.1%; escalated 517 (28.5%) |
 | Missed deaths | 51 (36 not flagged + 15 LOW tier) |
 | Calibration (OOF, threshold-independent) | slope 1.088, CITL 0.017, O:E 1.015, ECE 0.018 |
-| Combined system AUC | 0.842 (single-stage: equals Stage 1 AUC) |
+| Combined system AUC | 0.842 (equals the model AUC) |
 
 Killip/shock cross-tabs (single anchor: Killip IV = cardiogenic shock at
 presentation): Killip IV = 279 (103 deaths, 36.9%); cardiogenic shock = 422

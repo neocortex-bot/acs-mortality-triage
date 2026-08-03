@@ -4,16 +4,16 @@ This repository contains a reproducible single-center analysis for an admission-
 
 ## Summary
 
-The cohort includes 1,817 de-identified ACS admissions and 209 in-hospital deaths. A single-stage random forest uses 12 pre-specified routine admission variables with fold-specific median imputation and pooled out-of-fold validation. The fixed screening threshold is 0.08. Patients flagged at that threshold are split into HIGH, INTERMEDIATE, and LOW tiers using a fixed 25/50/25 ranking rule. HIGH and INTERMEDIATE are escalated for closer monitoring consideration.
+The cohort includes 1,817 de-identified ACS admissions and 209 in-hospital deaths. A random forest model uses 12 pre-specified routine admission variables with fold-specific median imputation and pooled out-of-fold validation. The fixed screening threshold is 0.08. Patients flagged at that threshold are split into HIGH, INTERMEDIATE, and LOW tiers using a fixed 25/50/25 ranking rule. HIGH and INTERMEDIATE are escalated for closer monitoring consideration.
 
 ## Main Results
 
 | Metric | Result |
 |---|---:|
 | Cohort | 1,817 patients, 209 deaths (11.5%) |
-| Stage 1 flagged | 691 (38.0%), with 173 deaths |
-| Stage 1 sensitivity / specificity | 82.8% / 67.8% |
-| Stage 1 PPV / NPV | 25.0% / 96.8% |
+| Flagged | 691 (38.0%), with 173 deaths |
+| Flagging sensitivity / specificity | 82.8% / 67.8% |
+| Flagging PPV / NPV | 25.0% / 96.8% |
 | OOF AUC / Brier | 0.842 / 0.080 |
 | GRACE 2.0 AUC | 0.816 |
 | HIGH tier | n=172, deaths=87, PPV=50.6% |
