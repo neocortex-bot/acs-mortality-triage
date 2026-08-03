@@ -81,7 +81,9 @@ admission (the look-ahead component). `shock_on_arrival` (278) is the IGD-time
 instantiation of Killip IV (278 of the 279; the 1 remaining patient had Killip
 IV recorded without the flag - a documentation-timing artifact, not a distinct
 clinical concept). SOA without CS = 0. Do NOT present SOA and Killip IV as two
-parallel constructs; mention SOA once, for backfill transparency only.
+parallel constructs; SOA must NOT appear in manuscript prose at all - the
+single anchor is Killip IV (279), and the look-ahead gap is CS without Killip
+IV (143).
 
 Missingness (12 model variables): highest is urea 1.4%, followed by random
 glucose 1.2% and systemic immune-inflammation index 0.9%. eGFR is 0.55% after
