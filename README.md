@@ -11,22 +11,24 @@ The cohort includes 1,817 de-identified ACS admissions and 209 in-hospital death
 | Metric | Result |
 |---|---:|
 | Cohort | 1,817 patients, 209 deaths (11.5%) |
-| Flagged | 691 (38.0%), with 173 deaths |
-| Flagging sensitivity / specificity | 82.8% / 67.8% |
-| Flagging PPV / NPV | 25.0% / 96.8% |
-| OOF AUC / Brier | 0.842 / 0.080 |
+| Flagged | 682 (37.5%), with 172 deaths |
+| Flagging sensitivity / specificity | 82.3% / 68.3% |
+| Flagging PPV / NPV | 25.2% / 96.7% |
+| OOF AUC / Brier | 0.843 / 0.080 |
 | GRACE 2.0 AUC | 0.816 |
-| HIGH tier | n=172, deaths=87, PPV=50.6% |
-| INTERMEDIATE tier | n=345, deaths=71, PPV=20.6% |
-| LOW tier | n=174, deaths=15, PPV=8.6% |
-| Escalated | 517 (28.5%) |
-| System confusion matrix | TP 158, FP 359, FN 51, TN 1249 |
-| System sensitivity / specificity / accuracy | 75.6% / 77.7% / 77.4% |
-| System PPV / NPV | 30.6% / 96.1% |
+| HIGH tier | n=170, deaths=88, PPV=51.8% |
+| INTERMEDIATE tier | n=341, deaths=70, PPV=20.5% |
+| LOW tier | n=171, deaths=14, PPV=8.2% |
+| Escalated | 511 (28.1%) |
+| System confusion matrix | TP 158, FP 353, FN 51, TN 1255 |
+| System sensitivity / specificity / accuracy | 75.6% / 78.0% / 77.8% |
+| System PPV / NPV | 30.9% / 96.1% |
 | Missed deaths | 51 of 209 (24.4%) |
-| Calibration | slope 1.088, CITL 0.017, O:E 1.015, ECE 0.018 |
+| Calibration | slope 1.076, CITL 0.015, O:E 1.014, ECE 0.017 |
 
-The fixed tier rule gives 517 escalated patients. With 158 deaths in HIGH plus INTERMEDIATE, the internally consistent false-positive count is 359 and the true-negative count is 1249.
+The fixed tier rule gives 511 escalated patients. With 158 deaths in HIGH plus INTERMEDIATE, the internally consistent false-positive count is 353 and the true-negative count is 1255.
+
+eGFR was derived with the CKD-EPI 2021 formula when creatinine, age, and sex were present but the source eGFR field was empty. This reduced cohort eGFR missingness from 6.7% to 0.6%.
 
 ## Repository Structure
 
@@ -62,4 +64,3 @@ This is a single-center retrospective study with internal validation only. Exter
 ## License
 
 MIT. See `LICENSE`.
-

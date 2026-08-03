@@ -1,4 +1,4 @@
-# AGENTS.md — Project Conventions & Methodology
+# AGENTS.md - Project Conventions & Methodology
 
 This file encodes the accumulated methodology and writing conventions for this
 project. Any agent (Codex, Claude Code, or other AI coding assistant) working
@@ -48,7 +48,7 @@ author's working skills:
    referral center (ICU/HCU/ward allocation); district/network deployment is
    hypothetical and requires external validation.
 
-## 2. Canonical numbers (source of truth — reproduce these EXACTLY)
+## 2. Canonical numbers (source of truth, reproduce these EXACTLY)
 
 Cohort: N = 1,817 ACS patients, 209 in-hospital deaths (11.5%), 1,608
 survivors. Model: Random Forest (n_estimators=500, max_depth=6,
@@ -59,20 +59,20 @@ for flagging). Fixed screening threshold 0.08.
 
 | Metric | Value |
 |---|---|
-| Flagged | 691 (38.0%); 173 deaths, 518 survivors |
-| Flagging sensitivity / specificity | 82.8% / 67.8% |
-| Flagging PPV / NPV | 25.0% / 96.8% (CM 173/518/36/1090) |
-| Model OOF AUC / Brier | 0.842 / 0.080 |
-| GRACE 2.0 AUC (same cohort) | 0.816; Delta AUC 0.025 (DeLong p = 0.026, 95% CI 0.003-0.048) |
-| HIGH tier (top 25% of flagged) | n = 172, deaths = 87, PPV = 50.6% |
-| INTERMEDIATE tier (25-75%) | n = 345, deaths = 71, PPV = 20.6% |
-| LOW tier (bottom 25%) | n = 174, deaths = 15, PPV = 8.6% |
-| Full system (HIGH + INT escalated) | CM 158/359/51/1249 (FP = 517 escalated - 158 deaths; CM sums to 1,817) |
-| System sensitivity / specificity / accuracy | 75.6% / 77.7% / 77.4% |
-| System PPV / NPV | 30.6% / 96.1%; escalated 517 (28.5%) |
-| Missed deaths | 51 (36 not flagged + 15 LOW tier) |
-| Calibration (OOF, threshold-independent) | slope 1.088, CITL 0.017, O:E 1.015, ECE 0.018 |
-| Combined system AUC | 0.842 (equals the model AUC) |
+| Flagged | 682 (37.5%); 172 deaths, 510 survivors |
+| Flagging sensitivity / specificity | 82.3% / 68.3% |
+| Flagging PPV / NPV | 25.2% / 96.7% (CM 172/510/37/1098) |
+| Model OOF AUC / Brier | 0.843 / 0.080 |
+| GRACE 2.0 AUC (same cohort) | 0.816; Delta AUC 0.027 (DeLong p = 0.021, 95% CI 0.004-0.049) |
+| HIGH tier (top 25% of flagged) | n = 170, deaths = 88, PPV = 51.8% |
+| INTERMEDIATE tier (25-75%) | n = 341, deaths = 70, PPV = 20.5% |
+| LOW tier (bottom 25%) | n = 171, deaths = 14, PPV = 8.2% |
+| Full system (HIGH + INT escalated) | CM 158/353/51/1255 (FP = 511 escalated - 158 deaths; CM sums to 1,817) |
+| System sensitivity / specificity / accuracy | 75.6% / 78.0% / 77.8% |
+| System PPV / NPV | 30.9% / 96.1%; escalated 511 (28.1%) |
+| Missed deaths | 51 (37 not flagged + 14 LOW tier) |
+| Calibration (OOF, threshold-independent) | slope 1.076, CITL 0.015, O:E 1.014, ECE 0.017 |
+| Combined system AUC | 0.843 (equals the model AUC) |
 
 Killip/shock cross-tabs (single anchor: Killip IV = cardiogenic shock at
 presentation): Killip IV = 279 (103 deaths, 36.9%); cardiogenic shock = 422
@@ -83,8 +83,12 @@ IV recorded without the flag - a documentation-timing artifact, not a distinct
 clinical concept). SOA without CS = 0. Do NOT present SOA and Killip IV as two
 parallel constructs; mention SOA once, for backfill transparency only.
 
-Missingness (12 model variables): eGFR 6.7% highest; complete case count and
-any-of-12 proportion must be recomputed and reported.
+Missingness (12 model variables): highest is urea 1.4%, followed by random
+glucose 1.2% and systemic immune-inflammation index 0.9%. eGFR is 0.55% after
+derivation via CKD-EPI 2021 from `kreatinin_igd` + age + sex; 112 cohort rows
+were backfilled in both Supabase and CSV, and 10 remain missing without
+creatinine. Complete-case count is 1,745; any missingness among the 12
+variables is 72 patients (4.0%).
 
 If any script produces numbers that differ from the table above, the script is
 wrong. Fix the script, do not "update" the canonical numbers.
@@ -93,10 +97,11 @@ wrong. Fix the script, do not "update" the canonical numbers.
 
 Three rows, all at threshold 0.08 with identical protocol:
 
-1. Main (naive, 12 features): system sens 75.6%, HIGH PPV 50.6%.
+1. Main (naive, 12 features): system sens 75.6%, HIGH PPV 51.8%, AUC 0.843.
 2. With cardiogenic shock (13 features): sensitivity MUST rise (look-ahead
-   inflation). Report the inflated numbers and explain: the flag can be
-   recorded after admission, so this is the bias that the naive model avoids.
+   inflation). Report system sens 90.4%, HIGH PPV 63.2%, AUC 0.938, and
+   explain: the flag can be recorded after admission, so this is the bias that
+   the naive model avoids.
 3. Report explicitly: "cardiogenic shock was not used in the main model to
    avoid look-ahead bias; including it inflates apparent performance."
 
@@ -108,7 +113,7 @@ Three rows, all at threshold 0.08 with identical protocol:
    1.5 spacing, A4, 2.5 cm margins, Times New Roman 12 pt, .docx, anonymous
    body (double-blind) with separate title page (running title <= 16 chars +
    total word count).
-2. **Zero em dashes** in prose. Audit with `grep -n '—'`. Replace with comma,
+2. **Zero em dashes** in prose. Audit with `grep -n $'\u2014'`. Replace with comma,
    colon, semicolon, period, or parentheses. Only exception: em dashes inside
    actual publication titles in the reference list.
 3. **Never mention** "non-echo", "non-echocardiographic", LVEF, TAPSE, LVOT
@@ -122,7 +127,7 @@ Three rows, all at threshold 0.08 with identical protocol:
    failure severity), not just "feature importance 0.152".
 6. **Honest reporting**:
    - Overall sensitivity (75.6% = 158/209) is the primary metric; the
-     capture rate among flagged deaths (158/173 = 91.3%) is secondary with
+     capture rate among flagged deaths (158/172 = 91.9%) is secondary with
      the denominator stated.
    - Missed deaths (51 = 28.2% of deaths) are stated explicitly.
    - Confusion matrix must sum to N (1,817).

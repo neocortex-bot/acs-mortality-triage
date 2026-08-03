@@ -19,6 +19,16 @@
 - Consequence for modeling: `cardiogenic_shock` must never enter the model
   (look-ahead: the flag can be recorded after admission). Only
   `shock_on_arrival` is admission-time.
+- eGFR backfill applied after source review: `egfr_igd` was derived with the
+  CKD-EPI 2021 creatinine equation when `kreatinin_igd`, age, and sex were
+  present but the eGFR field was empty. Validation against recorded eGFR values
+  showed median derived/recorded ratio 1.000 and 99.7% within +/-10%. The
+  Supabase source database was backfilled for 154 rows, including excluded
+  patients, with 0 remaining source rows eligible for derivation. The cohort
+  CSV was synchronized for 112 eligible cohort rows with 0 input mismatches and
+  exactly 112 changed lines. Ten cohort patients remain missing eGFR because
+  creatinine is unavailable. Scripts: `scripts/backfill_egfr_supabase.py` and
+  `scripts/sync_egfr_csv.py`.
 - Immutable input. Do not modify or re-derive.
 
 ## grace_scores.csv

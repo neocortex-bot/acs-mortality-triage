@@ -22,7 +22,8 @@ def main() -> None:
     main = results["main"]
     print()
     print("Key results")
-    print(f"Stage 1 flagged: {main['stage1']['tp'] + main['stage1']['fp']} ({main['stage1']['tp']} deaths)")
+    escalated_n = main["tiers"]["high"]["n"] + main["tiers"]["intermediate"]["n"]
+    print(f"Flagged: {main['stage1']['tp'] + main['stage1']['fp']} ({main['stage1']['tp']} deaths)")
     print(f"OOF AUC: {main['auc']:.3f}; Brier: {main['brier']:.3f}")
     print(
         "System CM: "
@@ -36,9 +37,12 @@ def main() -> None:
         f"PPV {main['system']['ppv']*100:.1f}%, "
         f"NPV {main['system']['npv']*100:.1f}%"
     )
-    print("Note: fixed HIGH+INTERMEDIATE tiering gives 517 escalated patients, so FP is 359 and TN is 1249.")
+    print(
+        "Note: fixed HIGH+INTERMEDIATE tiering gives "
+        f"{escalated_n} escalated patients, so FP is {main['system']['fp']} "
+        f"and TN is {main['system']['tn']}."
+    )
 
 
 if __name__ == "__main__":
     main()
-

@@ -6,66 +6,66 @@
   },
   "performance": {
     "stage1": {
-      "tp": 173,
-      "fp": 518,
-      "fn": 36,
-      "tn": 1090,
-      "sensitivity": 0.827751196172,
-      "specificity": 0.677860696517,
-      "accuracy": 0.695101816181,
-      "ppv": 0.250361794501,
-      "npv": 0.968028419183
+      "tp": 172,
+      "fp": 510,
+      "fn": 37,
+      "tn": 1098,
+      "sensitivity": 0.822966507177,
+      "specificity": 0.682835820896,
+      "accuracy": 0.698954320308,
+      "ppv": 0.25219941349,
+      "npv": 0.967400881057
     },
     "system": {
       "tp": 158,
-      "fp": 359,
+      "fp": 353,
       "fn": 51,
-      "tn": 1249,
+      "tn": 1255,
       "sensitivity": 0.755980861244,
-      "specificity": 0.776741293532,
-      "accuracy": 0.774353329664,
-      "ppv": 0.305609284333,
-      "npv": 0.960769230769
+      "specificity": 0.780472636816,
+      "accuracy": 0.777655476059,
+      "ppv": 0.309197651663,
+      "npv": 0.960949464012
     },
     "tiers": {
       "high": {
-        "n": 172,
-        "deaths": 87,
-        "survivors": 85,
-        "ppv": 0.505813953488
+        "n": 170,
+        "deaths": 88,
+        "survivors": 82,
+        "ppv": 0.517647058824
       },
       "intermediate": {
-        "n": 345,
-        "deaths": 71,
-        "survivors": 274,
-        "ppv": 0.205797101449
+        "n": 341,
+        "deaths": 70,
+        "survivors": 271,
+        "ppv": 0.205278592375
       },
       "low": {
-        "n": 174,
-        "deaths": 15,
-        "survivors": 159,
-        "ppv": 0.086206896552
+        "n": 171,
+        "deaths": 14,
+        "survivors": 157,
+        "ppv": 0.081871345029
       },
       "not_flagged": {
-        "n": 1126,
-        "deaths": 36,
-        "survivors": 1090,
-        "ppv": 0.031971580817
+        "n": 1135,
+        "deaths": 37,
+        "survivors": 1098,
+        "ppv": 0.032599118943
       }
     },
-    "auc": 0.841522054798,
-    "brier": 0.079837489723,
+    "auc": 0.842872955795,
+    "brier": 0.079658850273,
     "calibration": {
-      "slope": 1.08835820593,
-      "citl": 0.01701275908,
-      "oe_ratio": 1.015184670774,
-      "ece": 0.01772563487
+      "slope": 1.076093794633,
+      "citl": 0.015155852766,
+      "oe_ratio": 1.013514709124,
+      "ece": 0.016516634313
     }
   },
   "clinical_impact": {
     "advisory": true,
     "external_validation": "pending",
-    "escalated_n": 517,
+    "escalated_n": 511,
     "missed_deaths": 51
   },
   "features": [

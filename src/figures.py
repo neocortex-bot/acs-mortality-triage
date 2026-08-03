@@ -33,13 +33,13 @@ def fig_roc(results: dict) -> None:
     fpr_g, tpr_g, _ = roc_curve(y, g)
     comp = results["grace_comparison"]
     fig, ax = plt.subplots(figsize=(6.5, 5.2))
-    ax.plot(fpr_m, tpr_m, color=PALETTE["blue"], lw=2.5, label="Model AUC 0.843")
-    ax.plot(fpr_g, tpr_g, color=PALETTE["orange"], lw=2.5, label="GRACE 2.0 AUC 0.816")
+    ax.plot(fpr_m, tpr_m, color=PALETTE["blue"], lw=2.5, label=f"Model AUC {comp['model_auc']:.3f}")
+    ax.plot(fpr_g, tpr_g, color=PALETTE["orange"], lw=2.5, label=f"GRACE 2.0 AUC {comp['grace_auc']:.3f}")
     ax.plot([0, 1], [0, 1], color="#999999", lw=1, ls=":")
     ax.set_xlabel("False positive rate", fontsize=12)
     ax.set_ylabel("True positive rate", fontsize=12)
     ax.set_title("Discrimination in pooled out-of-fold predictions", fontsize=13)
-    ax.text(0.52, 0.20, "AUC difference 0.027\nDeLong p = 0.019", fontsize=10)
+    ax.text(0.52, 0.20, f"AUC difference {comp['delta_auc']:.3f}\nDeLong p = {comp['p_value']:.3f}", fontsize=10)
     ax.legend(loc="lower right", frameon=False, fontsize=10)
     _save(fig, "fig1_roc.png")
 
@@ -64,7 +64,7 @@ def fig_calibration(results: dict) -> None:
     ax.text(
         0.03,
         0.62,
-        "Slope 1.112\nCITL 0.186\nO:E 1.011\nECE 0.019",
+        f"Slope {cal['slope']:.3f}\nCITL {cal['citl']:.3f}\nO:E {cal['oe_ratio']:.3f}\nECE {cal['ece']:.3f}",
         fontsize=10,
         bbox={"facecolor": "white", "edgecolor": "#dddddd"},
     )
@@ -97,15 +97,19 @@ def fig_tiers(results: dict) -> None:
 
 
 def fig_flow(results: dict) -> None:
+    cohort = results["cohort"]
+    stage1 = results["main"]["stage1"]
+    tiers = results["main"]["tiers"]
+    flagged_n = stage1["tp"] + stage1["fp"]
     fig, ax = plt.subplots(figsize=(8, 5.2))
     ax.axis("off")
     boxes = [
-        (0.50, 0.86, "ACS cohort\nn=1,817\n209 deaths"),
-        (0.30, 0.62, "Flagged for review\nn=691\n173 deaths"),
-        (0.72, 0.62, "Standard care\nn=1,126\n36 deaths"),
-        (0.16, 0.30, "HIGH RISK\nconsider ICU\nn=172, PPV 50.6%"),
-        (0.42, 0.30, "INTERMEDIATE\nconsider HCU\nn=345, PPV 20.6%"),
-        (0.68, 0.30, "LOW RISK\nconsider ward\nn=174, PPV 8.6%"),
+        (0.50, 0.86, f"ACS cohort\nn={cohort['n']:,}\n{cohort['deaths']} deaths"),
+        (0.30, 0.62, f"Flagged for review\nn={flagged_n}\n{stage1['tp']} deaths"),
+        (0.72, 0.62, f"Standard care\nn={tiers['not_flagged']['n']:,}\n{tiers['not_flagged']['deaths']} deaths"),
+        (0.16, 0.30, f"HIGH RISK\nconsider ICU\nn={tiers['high']['n']}, PPV {tiers['high']['ppv']*100:.1f}%"),
+        (0.42, 0.30, f"INTERMEDIATE\nconsider HCU\nn={tiers['intermediate']['n']}, PPV {tiers['intermediate']['ppv']*100:.1f}%"),
+        (0.68, 0.30, f"LOW RISK\nconsider ward\nn={tiers['low']['n']}, PPV {tiers['low']['ppv']*100:.1f}%"),
     ]
     for x, y, text in boxes:
         ax.text(x, y, text, ha="center", va="center", fontsize=11, bbox={"boxstyle": "round,pad=0.35", "fc": "white", "ec": PALETTE["dark"], "lw": 1.4})
@@ -170,4 +174,3 @@ def generate_figures() -> None:
 
 if __name__ == "__main__":
     generate_figures()
-

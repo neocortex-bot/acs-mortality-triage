@@ -29,8 +29,8 @@ for t in doc.tables:
 full = "\n".join(texts)
 
 # 3. Em dashes / en dashes
-print(f"EM DASHES (—): {full.count(chr(8212))}")
-print(f"EN DASHES (–): {full.count(chr(8211))}")
+print(f"EM DASHES (U+2014): {full.count(chr(8212))}")
+print(f"EN DASHES (U+2013): {full.count(chr(8211))}")
 
 # 4. Forbidden terms
 for term in ["echo", "lvef", "tapse", "lvot", "non-echocardiographic", "echocardiograph"]:
@@ -45,7 +45,7 @@ for phrase in ["earlier analysis", "previous version", "in contrast to previous"
         print(f"DELTA-LANG '{phrase}': {hits}")
 
 # 6. Key numbers present
-for num in ["1,817", "209", "691", "158", "359", "51", "1,249", "75.6", "50.6", "0.08", "cardiogenic shock"]:
+for num in ["1,817", "209", "682", "172", "158", "353", "51", "1,255", "75.6", "51.8", "0.08", "cardiogenic shock"]:
     print(f"number '{num}': {'OK' if num in full else 'MISSING'}")
 
 # 7. References count (Vancouver list at end)

@@ -1,4 +1,4 @@
-"""End-to-end analysis for the single-stage ACS mortality triage model."""
+"""End-to-end analysis for the ACS mortality triage model."""
 
 from __future__ import annotations
 
