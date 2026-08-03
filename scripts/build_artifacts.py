@@ -216,6 +216,11 @@ def manuscript_text(results: dict, word_count: int = 0) -> list[tuple[str, str]]
     )
     return [
         ("title", "A Pragmatically Calibrated Machine Learning Triage System for In-Hospital Mortality in Acute Coronary Syndromes"),
+        ("authors", "Izzan Rijal Muslim, MD\u00b9; Andriany Qanitha, MD, PhD, FESC\u00b2"),
+        ("normal", "\u00b9 Department of Cardiology and Vascular Medicine, Faculty of Medicine, Hasanuddin University, Makassar, Indonesia"),
+        ("normal", "\u00b2 Department of Physiology, Clinical Epidemiology, Research, and Publication Unit, Faculty of Medicine, Hasanuddin University, Makassar, Indonesia"),
+        ("normal", "ORCID: Izzan Rijal Muslim 0009-0005-0173-3606; Andriany Qanitha 0000-0003-2420-0560"),
+        ("normal", "Corresponding author: Izzan Rijal Muslim, MD. Email: izzan.rijal@gmail.com"),
         ("normal", "Running title: ACS triage"),
         ("normal", f"Manuscript word count: {word_count}"),
         ("heading", "Abstract"),
@@ -358,6 +363,12 @@ def build_manuscript(results: dict) -> int:
             run = p.add_run(text)
             run.bold = True
             run.font.size = Pt(14)
+        elif kind == "authors":
+            p = doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            run = p.add_run(text)
+            run.font.size = Pt(12)
+            run.bold = True
         else:
             doc.add_paragraph(text)
 
