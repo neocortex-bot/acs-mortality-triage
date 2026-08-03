@@ -245,8 +245,8 @@ def run_analysis(write_json: bool = True) -> dict[str, Any]:
         "oof_predictions": {
             "patient_id": data["patient_id"].tolist(),
             "y_true": y.tolist(),
-            "model_probability": prob.tolist(),
-            "grace_2_0": grace_prob.tolist(),
+            "model_probability": [round(float(x), 12) for x in prob],
+            "grace_2_0": [round(float(x), 12) for x in grace_prob],
         },
     }
     results["guardrail_checks"] = guardrail_checks(results)
