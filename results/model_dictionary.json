@@ -1,0 +1,90 @@
+{
+  "cohort": {
+    "n": 1817,
+    "deaths": 209,
+    "survivors": 1608
+  },
+  "performance": {
+    "stage1": {
+      "tp": 173,
+      "fp": 518,
+      "fn": 36,
+      "tn": 1090,
+      "sensitivity": 0.8277511961722488,
+      "specificity": 0.677860696517413,
+      "accuracy": 0.6951018161805174,
+      "ppv": 0.2503617945007236,
+      "npv": 0.9680284191829485
+    },
+    "system": {
+      "tp": 158,
+      "fp": 359,
+      "fn": 51,
+      "tn": 1249,
+      "sensitivity": 0.7559808612440191,
+      "specificity": 0.7767412935323383,
+      "accuracy": 0.7743533296642818,
+      "ppv": 0.3056092843326886,
+      "npv": 0.9607692307692308
+    },
+    "tiers": {
+      "high": {
+        "n": 172,
+        "deaths": 87,
+        "survivors": 85,
+        "ppv": 0.5058139534883721
+      },
+      "intermediate": {
+        "n": 345,
+        "deaths": 71,
+        "survivors": 274,
+        "ppv": 0.20579710144927535
+      },
+      "low": {
+        "n": 174,
+        "deaths": 15,
+        "survivors": 159,
+        "ppv": 0.08620689655172414
+      },
+      "not_flagged": {
+        "n": 1126,
+        "deaths": 36,
+        "survivors": 1090,
+        "ppv": 0.03197158081705151
+      }
+    },
+    "auc": 0.8415220547977814,
+    "brier": 0.0798374897229128,
+    "calibration": {
+      "slope": 1.0883582059301913,
+      "citl": 0.01701275908018207,
+      "oe_ratio": 1.015184670774236,
+      "ece": 0.01772563486975651
+    }
+  },
+  "clinical_impact": {
+    "advisory": true,
+    "external_validation": "pending",
+    "escalated_n": 517,
+    "missed_deaths": 51
+  },
+  "features": [
+    "sbp",
+    "hr",
+    "killip",
+    "hb_igd",
+    "ureum_igd",
+    "egfr_igd",
+    "sii_igd",
+    "kalium_igd",
+    "natrium_igd",
+    "age_when_admission",
+    "gds_igd",
+    "oxygen_more_5lpm_igd"
+  ],
+  "limitations": [
+    "single-center retrospective internal validation",
+    "external validation pending",
+    "cardiogenic shock excluded from main model"
+  ]
+}
