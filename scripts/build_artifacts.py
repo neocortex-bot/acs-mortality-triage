@@ -162,6 +162,12 @@ def manuscript_text(results: dict, word_count: int = 0) -> list[tuple[str, str]]
     m = results["main"]
     cal = m["calibration"]
     gc = results["grace_comparison"]
+    miss = results["missingness"]
+    tradeoff = {r["threshold"]: r for r in results["threshold_tradeoff"]}
+    ref = tradeoff[0.1513]
+    selected = tradeoff[0.08]
+    additional_deaths = selected["system"]["tp"] - ref["system"]["tp"]
+    additional_fp = selected["false_positives"] - ref["false_positives"]
     return [
         ("title", "Admission-Time Risk Stratification for In-Hospital Mortality in Acute Coronary Syndrome"),
         ("normal", "Running title: ACS triage"),
@@ -171,30 +177,57 @@ def manuscript_text(results: dict, word_count: int = 0) -> list[tuple[str, str]]
         ("normal", "Keywords: acute coronary syndrome; mortality; triage; random forest; calibration"),
         ("heading", "Introduction"),
         ("normal", "Acute coronary syndrome care depends on early recognition of patients at risk for death. Current guidelines emphasize risk assessment, hemodynamic status, renal function, and clinical instability when planning monitoring and invasive management [1,2]. GRACE remains a major reference score with broad validation [3,4]. Local referral centers may still need an admission-time tool that maps risk to practical monitoring options."),
-        ("normal", "Killip class captures heart failure severity after myocardial infarction and remains clinically meaningful decades after its first description [5]. Blood pressure and heart rate reflect hemodynamic stress. Renal markers, electrolytes, hemoglobin, glucose, and oxygen requirement describe perfusion, metabolic reserve, and acute respiratory support needs. These variables are routinely available at presentation."),
-        ("normal", "We developed a single-stage random forest triage model using 12 pre-specified routine admission variables [6]. The aim was not to replace GRACE or clinician judgment. The aim was to produce an internally validated referral-center monitoring aid with fixed operating rules."),
+        ("normal", "The immediate problem at admission is not only prognostic labeling. It is the allocation of monitored beds, nurse attention, repeat assessment, and senior review while diagnostic and treatment pathways are still moving. A score that performs well as a population predictor may still be difficult to translate into bedside monitoring decisions if its threshold is optimized for discrimination rather than for triage safety. In a referral center, the clinical cost of missing early deterioration is high, but the capacity cost of excessive escalation is also real."),
+        ("normal", "Killip class captures heart failure severity after myocardial infarction and remains clinically meaningful decades after its first description [5]. Blood pressure and heart rate reflect hemodynamic stress. Renal markers, electrolytes, hemoglobin, glucose, and oxygen requirement describe perfusion, metabolic reserve, and acute respiratory support needs. These variables are routinely available at presentation. They also have face validity for admission decisions: a hypotensive patient with renal dysfunction and high oxygen need is different from a stable patient whose risk is driven only by age."),
+        ("normal", "We developed a single-stage random forest triage model using 12 pre-specified routine admission variables [6]. The aim was not to replace GRACE or clinician judgment. The aim was to produce an internally validated referral-center monitoring aid with fixed operating rules. The study objective was to estimate discrimination, calibration, and clinical tier performance for an admission-time model, compare its AUC with GRACE 2.0 on the same cohort, and quantify how a post-admission cardiogenic shock variable would inflate apparent performance."),
         ("heading", "Methods"),
-        ("normal", "The study used a de-identified single-center ACS registry. The cohort included 1,817 eligible admissions and 209 in-hospital deaths. GRACE 2.0 in-hospital mortality scores were available for the same patients. Killip class IV was treated as cardiogenic shock by definition in the source data. Cardiogenic shock was not used in the main model to avoid look-ahead bias; including it inflates apparent performance."),
+        ("subheading", "Study Design and Setting"),
+        ("normal", "The study used a de-identified single-center ACS registry from a referral center. The analysis was retrospective, and all model assessment was internal. The local ethics process approved use of the de-identified registry with no direct patient contact. Reporting follows TRIPOD+AI guidance for prediction models that use regression or machine learning methods [10]. External validation pending."),
+        ("subheading", "Participants and Outcomes"),
+        ("normal", "The cohort included 1,817 eligible ACS admissions, 209 in-hospital deaths, and 1,608 survivors. The outcome was all-cause in-hospital mortality. GRACE 2.0 in-hospital mortality scores were available for the same patients. Killip class IV was treated as cardiogenic shock by definition in the source data: there were 279 Killip IV patients, 422 patients with cardiogenic shock, 278 with shock on arrival, 278 with both flags, 144 with cardiogenic shock without shock on arrival, and no patient with shock on arrival without cardiogenic shock."),
+        ("normal", "This distinction was central to the design. Cardiogenic shock was not used in the main model to avoid look-ahead bias; including it inflates apparent performance. The variable can be recorded after admission, while shock on arrival is an admission-time clinical state. Therefore, shock on arrival could inform presentation status, but cardiogenic shock was reserved for the sensitivity analysis."),
+        ("subheading", "Predictors"),
         ("normal", "The 12 predictors were systolic blood pressure, heart rate, Killip class, hemoglobin, urea, estimated glomerular filtration rate, systemic immune-inflammation index, potassium, sodium, age at admission, random glucose, and oxygen need above 5 L/min. Features were selected from clinical domain knowledge before evaluation. No feature ranking or selection used outcome data."),
-        ("normal", "Median imputation was fitted within training folds only. The random forest used 500 trees, maximum depth 6, minimum leaf size 5, random_state 42, and all available cores. Validation used stratified five-fold pooled out-of-fold predictions. An inner three-fold loop estimated a Youden reference threshold, but no threshold optimization was applied to evaluation data. The screening threshold was fixed at 0.08."),
-        ("normal", "Patients with predicted probability at least 0.08 were flagged. Within the flagged pool, stable descending probability ranking split patients into HIGH, INTERMEDIATE, and LOW tiers in fixed 25/50/25 proportions. HIGH and INTERMEDIATE were escalated for monitoring consideration. All recommendations are advisory."),
-        ("normal", "Performance was measured by AUC, Brier score, sensitivity, specificity, accuracy, PPV, NPV, and confusion matrix counts. Calibration used logistic calibration slope, calibration-in-the-large, observed-to-expected ratio, and equal-frequency 10-bin ECE [7,11]. AUCs were compared with the DeLong method [9]. Events per variable used flagged deaths divided by 12 predictors [8]. Decision curve analysis followed standard net benefit methods [12]. Reporting follows TRIPOD+AI guidance [10]."),
+        ("normal", "Each predictor was chosen because it has a direct admission interpretation. Systolic blood pressure and heart rate describe hemodynamic stress. Killip class reflects pulmonary congestion and heart failure severity. Urea and estimated glomerular filtration rate reflect renal perfusion, chronic reserve, and the kidney response to low effective circulation. Hemoglobin describes oxygen carrying capacity. The systemic immune-inflammation index reflects inflammatory and thrombotic burden. Potassium and sodium identify electrolyte disturbance and illness severity. Random glucose captures acute metabolic stress. Oxygen need above 5 L/min reflects respiratory distress and impaired cardiopulmonary reserve. Age at admission anchors baseline vulnerability. All 12 variables were intended to be available within the first hour."),
+        ("subheading", "Missing Data"),
+        ("normal", f"Missingness was summarized for each model variable in Supplementary Table S1. eGFR had the highest missingness at 6.7%. Complete data for all 12 model variables were present in {miss['complete_case_n']:,} patients ({miss['complete_case_pct'] * 100:.1f}%), while any missingness among the 12 variables occurred in {miss['any_missing_n']} patients ({miss['any_missing_pct'] * 100:.1f}%). Median imputation was fitted within cross-validation training folds only, then applied to the held-out fold. This preserved the evaluation boundary and avoided using held-out values to define imputation medians."),
+        ("subheading", "Model Development"),
+        ("normal", f"The random forest used 500 trees, maximum depth 6, minimum leaf size 5, random_state 42, and all available cores. Depth and leaf constraints were used to limit overfitting and to avoid very small terminal nodes in a cohort with 209 deaths. Events per variable were calculated as flagged deaths divided by the 12 predictors, giving EPV {m['epv']:.1f}. The model was developed as a pragmatic triage tool, so the predictor set was fixed before validation rather than discovered from the full dataset."),
+        ("subheading", "Internal Validation"),
+        ("normal", "Validation used stratified five-fold pooled out-of-fold predictions with shuffle=True and random_state=42. Within each outer training fold, a three-fold inner loop estimated the Youden reference threshold. The held-out outer fold was used only for evaluation. No feature selection, threshold selection, tier optimization, calibration fitting, or operating-point selection used the pooled evaluation outcomes."),
+        ("subheading", "Screening Threshold"),
+        ("normal", f"The inner cross-validation Youden reference threshold was 0.1513. It was reported as a reference only and was not used for flagging. The fixed screening threshold was 0.08 because the clinical purpose was triage safety rather than a single optimal ROC point. Relative to the Youden reference, the 0.08 operating point captured {additional_deaths} additional deaths and produced {additional_fp} additional false positives, with escalated patients rising from {ref['escalated_n']} to {selected['escalated_n']}. Supplementary Table S2 shows the four examined thresholds: 0.1513, 0.10, 0.08, and 0.05."),
+        ("subheading", "Tier Protocol"),
+        ("normal", "Patients with predicted probability at least 0.08 were flagged. Within the flagged pool, stable descending probability ranking split patients into HIGH, INTERMEDIATE, and LOW tiers in fixed 25/50/25 proportions. HIGH and INTERMEDIATE were escalated for monitoring consideration. In referral-center terms, HIGH RISK implies consideration of ICU monitoring, INTERMEDIATE implies consideration of HCU monitoring, and LOW implies ward-level monitoring if the treating physician agrees. These are advisory implications, not automated placement decisions."),
+        ("subheading", "Comparator and Statistical Analysis"),
+        ("normal", "GRACE 2.0 in-hospital scores were computed on the same cohort and used as the comparator [3,4]. Performance was measured by AUC, Brier score, sensitivity, specificity, accuracy, PPV, NPV, and confusion matrix counts. Calibration used logistic calibration slope, calibration-in-the-large, observed-to-expected ratio, and equal-frequency 10-bin ECE [7,11]. AUCs were compared with the DeLong method for correlated ROC curves [9]. Decision curve analysis followed standard net benefit methods [12]. A sensitivity analysis added cardiogenic shock as a thirteenth feature to demonstrate look-ahead inflation."),
         ("heading", "Results"),
-        ("normal", f"The cohort included {results['cohort']['n']} patients, {results['cohort']['deaths']} deaths, and {results['cohort']['survivors']} survivors. eGFR had the highest missingness at 6.7%. Complete data for all 12 model variables were present in {results['missingness']['complete_case_n']} patients. Any missingness among the 12 variables occurred in {results['missingness']['any_missing_n']} patients."),
+        ("subheading", "Baseline Characteristics"),
+        ("normal", f"The cohort included {results['cohort']['n']:,} patients, {results['cohort']['deaths']} deaths (11.5%), and {results['cohort']['survivors']:,} survivors. Baseline characteristics by outcome are shown in Table 1. Patients who died were older and had lower systolic blood pressure, higher heart rate, lower hemoglobin, higher urea, lower eGFR, higher systemic immune-inflammation index, more abnormal electrolytes, higher random glucose, more severe Killip class, and more frequent oxygen need above 5 L/min."),
+        ("normal", "The shock cross-tabs showed clinically important timing differences. Death rates were 37.1% among patients with shock on arrival, 43.6% among patients with cardiogenic shock, and 56.2% among the 144 patients who had cardiogenic shock without shock on arrival. That last group is the reason cardiogenic shock was excluded from the main model: it identifies a very high-risk state, but not always one known at the admission decision point."),
+        ("subheading", "Missing Data"),
+        ("normal", f"Missing data were limited but not absent. eGFR had the highest missingness at 6.7%, followed by urea and random glucose. Complete data for all 12 model variables were present in {miss['complete_case_n']:,} patients ({miss['complete_case_pct'] * 100:.1f}%), and {miss['any_missing_n']} patients ({miss['any_missing_pct'] * 100:.1f}%) had at least one missing model variable. Median imputation within training folds allowed all eligible patients to contribute to pooled out-of-fold validation."),
+        ("subheading", "Discrimination and Calibration"),
         ("normal", "At threshold 0.08, Stage 1 flagged 691 patients. This group included 173 deaths and 518 survivors, giving sensitivity 82.8%, specificity 67.8%, PPV 25.0%, and NPV 96.8%. The pooled out-of-fold AUC was 0.842 and the Brier score was 0.080."),
+        ("normal", f"GRACE 2.0 AUC on the same cohort was {gc['grace_auc']:.3f}. The AUC difference was {gc['delta_auc']:.3f}, with DeLong p = {gc['p_value']:.3f} and 95% CI {gc['ci_low']:.3f} to {gc['ci_high']:.3f}. This comparison is shown in Table 2 and Figure 1. The finding supports local complementary decision support, not replacement of a score validated across very large ACS populations."),
+        ("normal", f"Calibration was close to the ideal line. The calibration slope was {cal['slope']:.3f}, calibration-in-the-large was {cal['citl']:.3f}, O:E ratio was {cal['oe_ratio']:.3f}, and ECE was {cal['ece']:.3f}. Figure 2 shows the reliability pattern across risk bins. These estimates came from pooled out-of-fold probabilities and were not training-set summaries."),
+        ("subheading", "Tier Allocation and Clinical Operating Point"),
         ("normal", "The HIGH tier included 172 patients, 87 deaths, and PPV 50.6%. The INTERMEDIATE tier included 345 patients, 71 deaths, and PPV 20.6%. The LOW tier included 174 patients, 15 deaths, and PPV 8.6%. HIGH plus INTERMEDIATE contained 158 deaths, equal to 91.3% of flagged deaths."),
-        ("normal", "For the full triage system, 517 patients were escalated. The confusion matrix was TP 158, FP 359, FN 51, and TN 1249. Overall sensitivity was 75.6%, specificity 77.7%, accuracy 77.4%, PPV 30.6%, and NPV 96.1%. Missed deaths were 51 of 209."),
-        ("normal", f"Calibration showed slope {cal['slope']:.3f}, calibration-in-the-large {cal['citl']:.3f}, O:E {cal['oe_ratio']:.3f}, and ECE {cal['ece']:.3f}. GRACE 2.0 AUC on the same cohort was {gc['grace_auc']:.3f}. The AUC difference was {gc['delta_auc']:.3f}, with DeLong p={gc['p_value']:.3f} and 95% CI {gc['ci_low']:.3f} to {gc['ci_high']:.3f}."),
-        ("normal", "In the sensitivity analysis, adding cardiogenic shock increased system sensitivity to 90.9% and HIGH-tier PPV to 62.0%. This confirms look-ahead inflation and supports exclusion from the main model."),
+        ("normal", "For the full triage system, 517 patients were escalated, equal to 28.5% of the cohort. The confusion matrix was TP 158, FP 359, FN 51, and TN 1,249, summing to 1,817 patients. Overall sensitivity was 75.6% (158/209), specificity 77.7%, accuracy 77.4%, PPV 30.6%, and NPV 96.1%. Missed deaths were 51 of 209 (24.4%): 36 patients were not flagged at Stage 1 and 15 were flagged but placed in the LOW tier. The 91.3% figure is secondary and uses a different denominator, 158 of 173 flagged deaths."),
+        ("normal", "The threshold trade-off followed the expected pattern. At the Youden reference threshold of 0.1513, sensitivity was 60.3%, false positives were 195, and 321 patients were escalated. At 0.10, sensitivity was 69.9%, false positives were 298, and 444 patients were escalated. At 0.08, sensitivity was 75.6%, false positives were 359, and 517 patients were escalated. At 0.05, sensitivity rose to 82.8%, but false positives increased to 509 and escalated patients to 682. The selected 0.08 threshold therefore retained a safety margin without escalating more than one third of the cohort."),
+        ("subheading", "Sensitivity Analysis"),
+        ("normal", "In the sensitivity analysis, adding cardiogenic shock increased system sensitivity to 90.9%, HIGH-tier PPV to 62.0%, and AUC to 0.938. Cardiogenic shock was not used in the main model to avoid look-ahead bias; including it inflates apparent performance. The mechanism is visible in the registry timing: 144 of 422 patients with cardiogenic shock had no shock flag on arrival, and their mortality was 56.2%."),
         ("heading", "Discussion"),
-        ("normal", "The model identified a clinically enriched subset for monitoring consideration using data available early in admission. The strongest clinical signal was not a single laboratory value but the joint pattern of hemodynamic status, heart failure severity, kidney function, anemia, inflammation, electrolytes, glucose, age, and oxygen requirement."),
-        ("normal", "The triage structure favors sensitivity while retaining a high NPV. That is suitable for a referral center where missed deterioration has immediate resource consequences. PPV remains limited by the 11.5% mortality prevalence, so the output should trigger review rather than dictate placement."),
-        ("normal", "GRACE has broader external evidence and should remain a reference risk tool. The local model is best interpreted as complementary decision support for bed allocation and monitoring intensity. It should not be used for district or network deployment without external validation."),
-        ("heading", "Limitations"),
-        ("normal", "This was a single-center retrospective study with internal validation only. External validation pending. The model was evaluated using pooled out-of-fold predictions, but site-specific practice patterns may affect transportability. EPV was 14.4, which meets the preferred threshold, but sample size remains modest for estimating rare deterioration patterns. The fixed tier protocol creates one arithmetic point: 517 escalated patients and 158 escalated deaths imply 359 false positives and 1249 true negatives."),
+        ("normal", "This study produced an admission-time ACS mortality triage model with fixed operating rules and internally validated performance. The model flagged 38.0% of patients at Stage 1 and captured 173 of 209 deaths. After the fixed 25/50/25 tier split, HIGH plus INTERMEDIATE escalation identified 158 deaths, giving overall sensitivity 75.6% and NPV 96.1%. The HIGH tier was clinically enriched, with 87 deaths among 172 patients and PPV 50.6%. The main value of the protocol is its direct mapping from a probability score to monitoring consideration at the referral center."),
+        ("normal", "Clinical use should remain advisory. A HIGH RISK result can support consideration of ICU monitoring, and an INTERMEDIATE result can support consideration of HCU monitoring, but the treating physician retains all placement and treatment decisions. A LOW result should not be read as absence of risk. Fifteen flagged patients in the LOW tier died, and 36 deaths occurred below the screening threshold. These deaths matter because the clinical task is not only to enrich a high-risk group, but also to make residual risk visible. The system therefore belongs in a prospective workflow that pairs the tier with bedside reassessment, repeat vital signs, and clinician review."),
+        ("normal", "The fixed operating point also makes prospective use auditable. A referral center can record how often HIGH and INTERMEDIATE results led to monitored care, how often clinicians overrode the suggestion, and whether missed deaths shared recognizable bedside features. Because the threshold and tier split are fixed, future monitoring can separate model performance from implementation behavior. That distinction is important: poor uptake, delayed laboratory availability, or lack of monitored beds could weaken clinical effect even if statistical performance remains stable. The audit should also track alert burden, time to clinician review, escalation delays, and reasons for disagreement."),
+        ("normal", "The comparison with GRACE should be interpreted carefully. GRACE has broad external evidence and remains a reference score in ACS risk assessment [3,4]. The local model had AUC 0.842 compared with GRACE 2.0 AUC 0.816 on the same cohort, with an AUC difference of 0.025 and DeLong p = 0.026. That modest difference may be useful for a referral-center monitoring protocol, but it is not a claim that a single-center model supersedes GRACE. Both are decision-support tools. GRACE provides a general benchmark; the local model translates routine admission variables into a fixed monitoring tier."),
+        ("normal", "The look-ahead analysis is a methodological finding. Adding cardiogenic shock raised sensitivity to 90.9% and AUC to 0.938, which looks attractive until the timing of the variable is considered. Cardiogenic shock can be recorded after admission, and 144 patients with cardiogenic shock had no shock flag on arrival. Including that variable would let the model use information that may not exist when the triage decision is made. Reporting the inflated result makes the bias visible and supports the decision to keep the main model limited to admission-time variables."),
+        ("normal", "The predictor pattern also has clinical coherence. Killip class had the highest feature importance at approximately 0.152, consistent with the central role of heart failure severity in early ACS mortality. Urea was next at approximately 0.138 and eGFR followed at approximately 0.120, making renal status a dominant signal. The kidney is an early sensor of hypoperfusion, venous congestion, neurohormonal activation, and chronic reserve. Systolic blood pressure and systemic immune-inflammation index were each approximately 0.090, linking hemodynamic compromise with inflammatory burden. Oxygen need above 5 L/min was approximately 0.084, reflecting respiratory distress and limited cardiopulmonary reserve. These variables are not abstract model inputs; they describe physiology clinicians already monitor."),
+        ("normal", "The resource-limited projection is deliberately narrow. At the referral center, the model can be studied as a way to structure ICU, HCU, and ward monitoring discussions. District or network deployment is hypothetical and requires external validation. Transferability cannot be assumed because treatment availability, referral delays, competing bed constraints, and facility-level case mix can alter both predictor distributions and outcomes. A facility with fewer monitored beds may experience a treatment paradox: patients flagged as high risk may receive different care precisely because the model identifies them, changing observed mortality after implementation."),
+        ("normal", "Several limitations remain. This was a single-center retrospective study with internal validation only. External validation pending. The event count was modest, even though EPV was 14.4. PPV was bounded by the 11.5% mortality prevalence, so many escalated patients survived. Missing data were handled with fold-specific median imputation, but missingness may still reflect clinical workflow and illness severity. Registry labels may contain timing noise, particularly for shock-related variables. The analysis did not include temporal validation, prospective impact assessment, clinician adherence, or calibration monitoring after deployment. These limitations define the next evaluation step: a prospective referral-center study with external validation before broader use."),
         ("heading", "Conclusion"),
-        ("normal", "A single-stage admission-time random forest model identified ACS patients at higher risk of in-hospital death and mapped them to advisory referral-center monitoring tiers. The approach is reproducible and clinically interpretable, but external validation is required before broader use."),
-        ("heading", "References"),
+        ("normal", "A single-stage admission-time random forest model identified ACS patients at higher risk of in-hospital death and mapped them to advisory referral-center monitoring tiers. The fixed protocol captured 158 of 209 deaths after escalation while keeping decisions with the treating physician. The results support prospective referral-center testing with explicit monitoring of clinical workflow. External validation is required before broader use."),
     ]
 
 
@@ -204,6 +237,33 @@ def count_words(paragraphs: list[tuple[str, str]], tables: list[list[list[str]]]
         for row in table:
             text += " " + " ".join(row)
     return len(re.findall(r"\b\S+\b", text))
+
+
+def doc_word_count(doc: Document) -> int:
+    words = 0
+    for paragraph in doc.paragraphs:
+        words += len(paragraph.text.split())
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                words += len(cell.text.split())
+    return words
+
+
+def apply_manuscript_format(doc: Document) -> None:
+    for paragraph in doc.paragraphs:
+        paragraph.paragraph_format.line_spacing = 1.5
+        for run in paragraph.runs:
+            run.font.name = "Times New Roman"
+            run.font.size = Pt(12)
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    paragraph.paragraph_format.line_spacing = 1.5
+                    for run in paragraph.runs:
+                        run.font.name = "Times New Roman"
+                        run.font.size = Pt(12)
 
 
 def build_manuscript(results: dict) -> int:
@@ -217,13 +277,16 @@ def build_manuscript(results: dict) -> int:
         ["Calibration slope", f"{results['main']['calibration']['slope']:.3f}", ""],
     ]
     tiers = results["main"]["tiers"]
-    table3 = [["Tier", "n", "Deaths", "PPV"], ["HIGH", "172", "87", "50.6%"], ["INTERMEDIATE", "345", "71", "20.6%"], ["LOW", "174", "15", "8.6%"]]
+    table3 = [
+        ["Group", "n", "Deaths", "PPV"],
+        ["HIGH", str(tiers["high"]["n"]), str(tiers["high"]["deaths"]), fmt_pct(tiers["high"]["ppv"])],
+        ["INTERMEDIATE", str(tiers["intermediate"]["n"]), str(tiers["intermediate"]["deaths"]), fmt_pct(tiers["intermediate"]["ppv"])],
+        ["LOW", str(tiers["low"]["n"]), str(tiers["low"]["deaths"]), fmt_pct(tiers["low"]["ppv"])],
+        ["Not flagged", str(tiers["not_flagged"]["n"]), str(tiers["not_flagged"]["deaths"]), fmt_pct(tiers["not_flagged"]["ppv"])],
+    ]
     table_s1 = [["Variable", "Missing n", "Missing %"]] + [[r["variable"], str(r["missing_n"]), f"{r['missing_pct']*100:.1f}%"] for r in results["missingness"]["per_variable"]]
     table_s2 = [["Threshold", "Sensitivity", "False positives", "Missed deaths", "Flagged n", "Escalated n", "PPV", "Specificity"]] + [[str(r["threshold"]), fmt_pct(r["system"]["sensitivity"]), str(r["false_positives"]), str(r["missed_deaths"]), str(r["flagged_n"]), str(r["escalated_n"]), fmt_pct(r["system"]["ppv"]), fmt_pct(r["system"]["specificity"])] for r in results["threshold_tradeoff"]]
-    tables = [table1, table2, table3, table_s1, table_s2]
     paragraphs = manuscript_text(results, 0)
-    wc = count_words(paragraphs, tables)
-    paragraphs = manuscript_text(results, wc)
 
     doc = Document()
     sec = doc.sections[0]
@@ -241,6 +304,8 @@ def build_manuscript(results: dict) -> int:
     for kind, text in paragraphs:
         if kind == "heading":
             doc.add_heading(text, level=1)
+        elif kind == "subheading":
+            doc.add_heading(text, level=2)
         elif kind == "title":
             p = doc.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -249,16 +314,21 @@ def build_manuscript(results: dict) -> int:
             run.font.size = Pt(14)
         else:
             doc.add_paragraph(text)
-        if text == "Results":
-            pass
+
     doc.add_paragraph("Table 1. Baseline characteristics by outcome.")
     add_table(doc, table1)
-    doc.add_paragraph("Table 2. Model and GRACE 2.0 performance.")
+    doc.add_paragraph("Table 2. Model and GRACE 2.0 performance in pooled out-of-fold validation.")
     add_table(doc, table2)
-    doc.add_paragraph("Table 3. Tier allocation among flagged patients.")
+    doc.add_paragraph("Table 3. Tier allocation and not-flagged mortality.")
     add_table(doc, table3)
-    for i, fig_name in enumerate(["fig1_roc.png", "fig2_calibration.png", "fig3_tiers.png", "fig4_flow.png"], start=1):
-        p = doc.add_paragraph(f"Figure {i}. {fig_name.replace('_', ' ').replace('.png', '')}.")
+    figure_captions = [
+        ("fig1_roc.png", "Figure 1. ROC curves for the admission model and GRACE 2.0 on the same cohort."),
+        ("fig2_calibration.png", "Figure 2. Calibration diagram for pooled out-of-fold admission model probabilities."),
+        ("fig3_tiers.png", "Figure 3. Mortality enrichment across HIGH, INTERMEDIATE, LOW, and not-flagged groups."),
+        ("fig4_flow.png", "Figure 4. Referral-center monitoring flow with advisory ICU, HCU, and ward implications."),
+    ]
+    for fig_name, caption in figure_captions:
+        p = doc.add_paragraph(caption)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -267,16 +337,27 @@ def build_manuscript(results: dict) -> int:
     add_table(doc, table_s1)
     doc.add_paragraph("Supplementary Table S2. Threshold trade-off.")
     add_table(doc, table_s2)
-    for fig_name in ["fig5_threshold_tradeoff.png", "fig6_dca.png"]:
-        p = doc.add_paragraph(f"Supplementary Figure. {fig_name.replace('_', ' ').replace('.png', '')}.")
+    supplementary_captions = [
+        ("fig5_threshold_tradeoff.png", "Supplementary Figure S1. Threshold trade-off across the Youden reference and lower triage thresholds."),
+        ("fig6_dca.png", "Supplementary Figure S2. Decision curve analysis for the admission model."),
+    ]
+    for fig_name, caption in supplementary_captions:
+        p = doc.add_paragraph(caption)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.add_run().add_picture(str(FIGURES_DIR / fig_name), width=Inches(5.8))
+    doc.add_heading("References", level=1)
     for i, ref in enumerate(REFERENCES, start=1):
         doc.add_paragraph(f"{i}. {ref}")
+    wc = doc_word_count(doc)
+    for paragraph in doc.paragraphs:
+        if paragraph.text.startswith("Manuscript word count:"):
+            paragraph.text = f"Manuscript word count: {wc}"
+            break
     footer = doc.sections[0].footer.paragraphs[0]
     footer.text = f"Manuscript word count: {wc}"
+    apply_manuscript_format(doc)
     MANUSCRIPT_PATH.parent.mkdir(parents=True, exist_ok=True)
     doc.save(MANUSCRIPT_PATH)
     return wc
@@ -292,4 +373,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
