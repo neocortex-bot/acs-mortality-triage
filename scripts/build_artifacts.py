@@ -169,7 +169,7 @@ def manuscript_text(results: dict, word_count: int = 0) -> list[tuple[str, str]]
     additional_deaths = selected["system"]["tp"] - ref["system"]["tp"]
     additional_fp = selected["false_positives"] - ref["false_positives"]
     return [
-        ("title", "Admission-Time Risk Stratification for In-Hospital Mortality in Acute Coronary Syndrome"),
+        ("title", "A Pragmatically Calibrated Machine Learning Triage System for In-Hospital Mortality in Acute Coronary Syndromes"),
         ("normal", "Running title: ACS triage"),
         ("normal", f"Manuscript word count: {word_count}"),
         ("heading", "Abstract"),
