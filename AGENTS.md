@@ -13,11 +13,12 @@ author's working skills:
 ## 1. Scientific non-negotiables (hard rules, never break)
 
 1. **Look-ahead bias is forbidden.** `cardiogenic_shock` must NEVER enter the
-   prediction model: 144/422 patients with cardiogenic shock had no shock flag
-   on arrival, and the flag can be recorded after admission. Only
-   `shock_on_arrival` is a legitimate admission-time variable. The ONLY place
-   cardiogenic shock may appear is the sensitivity analysis (see section 3),
-   where it demonstrates look-ahead inflation.
+   prediction model: 143/422 patients with cardiogenic shock had no Killip
+   class IV, i.e. the shock record was made without an admission-time anchor
+   and can reflect documentation after admission. The admission-time anchor is
+   Killip class IV (and its IGD-time binary instantiation `shock_on_arrival`).
+   The ONLY place cardiogenic shock may appear is the sensitivity analysis
+   (see section 3), where it demonstrates look-ahead inflation.
 2. **Killip class IV = cardiogenic shock by definition.** The dataset has been
    backfilled so that `cardiogenic_shock = 1` for all 279 Killip IV patients
    (165 reclassified by definition, 46 records changed). Never "correct" this
@@ -73,9 +74,14 @@ for flagging). Fixed screening threshold 0.08.
 | Calibration (OOF, threshold-independent) | slope 1.088, CITL 0.017, O:E 1.015, ECE 0.018 |
 | Combined system AUC | 0.842 (single-stage: equals Stage 1 AUC) |
 
-Killip/shock cross-tabs: Killip IV = 279; cardiogenic shock = 422; shock on
-arrival = 278; both = 278; CS without SOA = 144; SOA without CS = 0. Death
-rates: SOA 37.1%, CS 43.6%, CS without SOA 56.2%.
+Killip/shock cross-tabs (single anchor: Killip IV = cardiogenic shock at
+presentation): Killip IV = 279 (103 deaths, 36.9%); cardiogenic shock = 422
+(43.6%); CS without Killip IV = 143 (81 deaths, 56.6%) = records made after
+admission (the look-ahead component). `shock_on_arrival` (278) is the IGD-time
+instantiation of Killip IV (278 of the 279; the 1 remaining patient had Killip
+IV recorded without the flag - a documentation-timing artifact, not a distinct
+clinical concept). SOA without CS = 0. Do NOT present SOA and Killip IV as two
+parallel constructs; mention SOA once, for backfill transparency only.
 
 Missingness (12 model variables): eGFR 6.7% highest; complete case count and
 any-of-12 proportion must be recomputed and reported.

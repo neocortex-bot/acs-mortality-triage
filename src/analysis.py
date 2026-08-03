@@ -154,12 +154,13 @@ def shock_crosstabs(data: pd.DataFrame) -> dict[str, Any]:
         "killip_iv_n": int(killip_iv.sum()),
         "cardiogenic_shock_n": int(cs.sum()),
         "shock_on_arrival_n": int(soa.sum()),
-        "both_n": int((cs & soa).sum()),
-        "cs_without_soa_n": int(cs_without_soa.sum()),
         "soa_without_cs_n": int(soa_without_cs.sum()),
+        "cs_without_killip_iv_n": int((cs & ~killip_iv).sum()),
+        "death_rate_killip_iv": float(y[killip_iv].mean()),
         "death_rate_shock_on_arrival": float(y[soa].mean()),
         "death_rate_cardiogenic_shock": float(y[cs].mean()),
         "death_rate_cs_without_soa": float(y[cs_without_soa].mean()),
+        "death_rate_cs_without_killip_iv": float(y[cs & ~killip_iv].mean()),
     }
 
 

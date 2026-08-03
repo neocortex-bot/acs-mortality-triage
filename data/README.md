@@ -9,9 +9,13 @@
   corresponds to cardiogenic shock by definition, therefore
   `cardiogenic_shock = 1` for all 279 Killip IV patients (46 records updated:
   45 from 0 to 1, 1 from missing to 1; 165 records reclassified by
-  definition). Post-backfill counts: cardiogenic shock 422, shock on arrival
-  278, both 278, cardiogenic shock without shock on arrival 144, shock on
-  arrival without cardiogenic shock 0.
+  definition). Single anchor for admission-time shock: **Killip IV = 279**
+  (103 deaths, 36.9%). `shock_on_arrival` (278) is the IGD-time binary
+  instantiation of the same construct: 278 of the 279 Killip IV patients had
+  the flag; the 1 remaining patient had Killip IV recorded without it (timing
+  artifact). Post-backfill counts: cardiogenic shock 422, of which 143 were
+  recorded without Killip class IV (death rate 56.6%) - the post-admission
+  look-ahead component. Shock on arrival without cardiogenic shock = 0.
 - Consequence for modeling: `cardiogenic_shock` must never enter the model
   (look-ahead: the flag can be recorded after admission). Only
   `shock_on_arrival` is admission-time.
